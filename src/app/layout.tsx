@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${poppins.variable} bg-gray-800 text-slate-100 container mx-auto flex justify-center max-w-lg p-3`}
+        className={`${poppins.variable} bg-gray-800 text-slate-100 container mx-auto flex flex-col justify-center max-w-lg p-3`}
       >
         <Navbar />
         {children}
