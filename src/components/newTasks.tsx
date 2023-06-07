@@ -53,6 +53,7 @@ const NewTasks = () => {
               placeholder="What are you working on?"
               className="mb-3 p-1 border-none bg-slate-600 text-xl focus:caret-slate-100 focus:outline-none placeholder:italic placeholder:text-xl"
               autoFocus
+
             />
             <button
               className="border-2 border-slate-300 text-slate-300 px-3 py-2 mt-3 rounded-md hover:bg-slate-700 focus-within:bg-slate-700 outline-none"
