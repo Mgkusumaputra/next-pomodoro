@@ -2,7 +2,6 @@
 
 import NewTasks from "@/components/newTasks";
 import Timer from "@components/timer";
-import { useState } from "react";
 
 export default function Home() {
 

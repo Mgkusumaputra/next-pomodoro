@@ -1,8 +1,7 @@
 import useTimer from "../hooks/useTimer";
 
 export default function Timer() {
-  const { getTime, switchStage, stage, options, seconds, start, setStart } =
-    useTimer();
+  const { getTime, switchStage, stage, options, seconds, start, setStart } = useTimer();
 
   return (
     <div className="flex flex-col justify-center items-center mb-8">
