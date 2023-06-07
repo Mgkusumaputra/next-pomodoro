@@ -24,39 +24,49 @@ const NewTasks = () => {
 
   return (
     <>
-      <div className="flex flex-col">
-        <h2 className="text-2xl font-medium mb-3">Tasks</h2>
-        <ul>
+      <div className="flex flex-col space-y-3">
+        <h2 className="text-2xl font-medium">Tasks</h2>
+        <ul className="flex flex-col space-y-3 mb-3">
           {tasks.map((task) => (
-            <li className="" key={task.id}>
-              {task.title}
-              <button onClick={() => handleDeleteTask(task.id)}>
+            <li
+              className="w-full p-3 flex items-center bg-slate-600 rounded-md text-lg"
+              key={task.id}
+            >
+              <button
+                onClick={() => handleDeleteTask(task.id)}
+                className="mr-1 flex items-center justify-center rounded-full bg-gray-800 w-7 h-7"
+              >
                 <Close />
               </button>
+              <span className="text-xl inline-block align-text-middle">
+                {task.title}
+              </span>
             </li>
           ))}
         </ul>
         {showInput ? (
-          <div className="flex flex-col bg-gray-800">
+          <div className="flex flex-col p-3 rounded-md bg-slate-600 ">
             <input
               type="text"
               value={newTask}
               onChange={(e) => setNewTask(e.target.value)}
               placeholder="What are you working on?"
+              className="mb-3 p-1 border-none bg-slate-600 text-xl focus:caret-slate-100 focus:outline-none placeholder:italic placeholder:text-xl"
+              autoFocus
             />
             <button
-              className="border border-slate-300 text-slate-300 px-3 py-1 rounded-xl hover:bg-slate-700 focus-within:bg-slate-700 outline-none"
+              className="border-2 border-slate-300 text-slate-300 px-3 py-2 mt-3 rounded-md hover:bg-slate-700 focus-within:bg-slate-700 outline-none"
               onClick={handleAddTask}
             >
-              Save
+              <p className="text-xl">Save</p>
             </button>
           </div>
         ) : (
           <button
-            className="border border-slate-300 text-slate-300 px-3 py-1 rounded-xl hover:bg-slate-700 focus-within:bg-slate-700 outline-none"
+            className="border-2 border-dashed border-slate-300 text-slate-300 px-3 py-2 mt-3 rounded-md hover:bg-slate-700 focus-within:bg-slate-700 outline-none"
             onClick={() => setShowInput(true)}
           >
-            Add Task
+            <p className="text-xl">Add Task</p>
           </button>
         )}
       </div>
