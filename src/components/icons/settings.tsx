@@ -1,6 +1,6 @@
 import type { InlineSVGProps } from "@interfaces/inlineSvg";
 
-export function Logo({
+export function Settings({
   className = "",
   width = 24,
   height = 24,

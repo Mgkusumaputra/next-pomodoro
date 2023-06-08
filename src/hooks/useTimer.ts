@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 type timeStageItemProps = {
   [key: number]: number;
@@ -19,6 +19,42 @@ const useTimer = () => {
   const [start, setStart] = useState(false);
 
   const options = ["Pomodoro", "Short Break", "Long Break"];
+  const longBreakInterval = 2;
+
+  const handleSaveTimer = () => {
+    const updatePomodoro = (event: ChangeEvent<HTMLInputElement>) => {
+      setPomodoro(Number(event.currentTarget.value));
+      localStorage.setItem("pomodoro", event.currentTarget.value);
+    };
+
+    const updateShortBreak = (event: ChangeEvent<HTMLInputElement>) => {
+      setShortBreak(Number(event.currentTarget.value));
+      localStorage.setItem("shortBreak", event.currentTarget.value);
+    };
+
+    const updateLongBreak = (event: ChangeEvent<HTMLInputElement>) => {
+      setLongBreak(Number(event.currentTarget.value));
+      localStorage.setItem("longBreak", event.currentTarget.value);
+    };
+  };
+
+  const timerSettings = [
+    {
+      value: "Pomodoro",
+      ref: updatePomodoro,
+      defaultValue: { pomodoro },
+    },
+    {
+      value: "Short Break",
+      ref: updateShortBreak,
+      defaultValue: { shortBreak },
+    },
+    {
+      value: "Long Break",
+      ref: updateLongBreak,
+      defaultValue: { longBreak },
+    },
+  ];
 
   const switchStage = (index: number) => {
     const isYes =
@@ -55,9 +91,9 @@ const useTimer = () => {
     setStart(false);
     setConsumedSecond(0);
     setSeconds(0);
-    setPomodoro(25);
-    setLongBreak(15);
-    setShortBreak(5);
+    setPomodoro(pomodoro);
+    setLongBreak(longBreak);
+    setShortBreak(shortBreak);
   };
 
   const playAlarm = () => {
@@ -75,7 +111,25 @@ const useTimer = () => {
     const setMinutes = updateMinute();
 
     if (minutes === 0 && seconds === 0) {
-      timeUp();
+      if (stage === 0) {
+        // Transition from Pomodoro to Short Break
+        setStage(1);
+        timeUp();
+      } else if (stage === 1) {
+        // Transition from Short Break to Long Break (after 4 intervals)
+        if (consumedSecond % (longBreakInterval * shortBreak * 60) === 0) {
+          setStage(2);
+          timeUp();
+        } else {
+          // Transition from Short Break to Pomodoro
+          setStage(0);
+          timeUp();
+        }
+      } else if (stage === 2) {
+        // Transition from Long Break to Pomodoro
+        setStage(0);
+        timeUp();
+      }
     } else if (seconds === 0) {
       setMinutes((minute) => minute - 1);
       setSeconds(59);
@@ -85,6 +139,15 @@ const useTimer = () => {
   };
 
   useEffect(() => {
+    const currentPomodoro = localStorage.getItem("pomodoro") || "25";
+    setPomodoro(Number(currentPomodoro));
+
+    const currentShortBreak = localStorage.getItem("shortBreak") || "5";
+    setShortBreak(Number(currentShortBreak));
+
+    const currentLongBreak = localStorage.getItem("longBreak") || "15";
+    setLongBreak(Number(currentLongBreak));
+
     window.onbeforeunload = () => {
       return consumedSecond ? "Show waring" : null;
     };
@@ -109,6 +172,11 @@ const useTimer = () => {
     seconds,
     start,
     setStart,
+    handleSaveTimer,
+    setPomodoro,
+    setShortBreak,
+    setLongBreak,
+    timerSettings,
   };
 };
 
